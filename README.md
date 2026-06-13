@@ -2,11 +2,19 @@
   <br>
   <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/Linux-Dark.svg" width="50px">
   <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/Bash-Dark.svg" width="50px">
+  <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/C-Dark.svg" width="50px">
   <br>
   T2HASH CORE 
 </h1>
 
 <h4 align="center">☠️ موتور پردازش خام اسمبلی و تونلینگ سطح صفر (Layer-0) ☠️</h4>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Architecture-x64_Assembly-8A2BE2?style=for-the-badge&logo=linux&logoColor=white">
+  <img src="https://img.shields.io/badge/Execution-Zero_Overhead-black?style=for-the-badge&logo=c&logoColor=white">
+  <img src="https://img.shields.io/badge/Payload-XOR_0x5A-darkred?style=for-the-badge&logo=webassembly&logoColor=white">
+  <img src="https://img.shields.io/badge/Security-Anti--DPI_Stealth-purple?style=for-the-badge&logo=hackthebox&logoColor=white">
+</p>
 
 <p align="center">
   <a href="#-فلسفه-و-معماری-پروژه">فلسفه پروژه</a> •
@@ -19,7 +27,7 @@
 
 ## 🛑 فلسفه و معماری پروژه (Architecture Overview)
 
-در دنیای مدرنِ شبکه، نرم‌افزارهای تونلینگ و پروکسی‌ها عمدتاً با زبان‌های سطح بالا (مثل Go، Python یا حتی C با کتابخانه‌های سنگین) نوشته می‌شوند. نتیجه‌ی این رویکرد، درگیری با زباله‌روب‌ها (Garbage Collectors)، تاخیر در Context Switching و سربار (Overhead) شدیدِ لایه‌ی Application است. 
+در دنیای مدرنِ شبکه، نرم‌افزارهای تونلینگ و پروکسی‌ها عمدتاً با زبان‌های سطح بالا نوشته می‌شوند. نتیجه‌ی این رویکرد، درگیری با زباله‌روب‌ها (Garbage Collectors)، تاخیر در Context Switching و سربار (Overhead) شدیدِ لایه‌ی Application است. 
 
 سیستم **T2HASH** یک پارادایم کاملاً متفاوت است. این پروژه بازگشتی است به ریشه‌های پردازش. هسته‌ی اصلیِ این سیستم، یک **UDP Wrapper** اختصاصی است که تماماً با دستورات خام **x64 Assembly** توسعه یافته است. ما در T2HASH واسطه‌ها را حذف کرده‌ایم؛ کدِ ما مستقیماً از طریق فراخوانی‌های سیستمی (Syscalls) لینوکس با لایه‌ی کرنل (Ring 0) و رابط‌های شبکه صحبت می‌کند. 
 
@@ -35,7 +43,7 @@
    برخلاف وب‌سرورهای استاندارد، اسمبلیِ ما پورت‌های شبکه را در پایین‌ترین سطح ممکن (AF_INET, SOCK_DGRAM) باز می‌کند. این کار باعث می‌شود پکت‌ها پیش از آنکه توسط روتین‌های پیچیده‌ی سیستم‌عامل درگیر شوند، وارد بافر اختصاصی ما گردند.
 
 2. **فاز جهش باینری (Bitwise Mutation Payload):**
-   هر پکتی که وارد سیستم می‌شود، مستقیماً به ثبات‌های پردازنده (مانند `rax` و `rsi`) منتقل شده و تحت یک عملیات بیتی `XOR 0x5A` قرار می‌گیرد. این چرخه در سطح ماشین‌کد اجرا می‌شود، بنابراین پردازش هزاران پکت در ثانیه، مصرف پردازنده را حتی به ۱ درصد هم نمی‌رساند (Zero CPU Bottleneck).
+   هر پکتی که وارد سیستم می‌شود، مستقیماً به ثبات‌های پردازنده (مانند `rax` و `rsi`) منتقل شده و تحت یک عملیات بیتی رمز هگز  قرار می‌گیرد. این چرخه در سطح ماشین‌کد اجرا می‌شود، بنابراین پردازش هزاران پکت در ثانیه، مصرف پردازنده را حتی به ۱ درصد هم نمی‌رساند (Zero CPU Bottleneck).
 
 3. **فاز تزریق مجدد و عبور (Kernel Buffer Injection):**
    پس از تغییر ساختارِ هدر و پی‌لود، پکت‌های تغییرشکل‌یافته (Obfuscated) مجدداً از طریق `sys_sendto` به جریان شبکه تزریق شده و از سدهای فیلترینگ عبور می‌کنند.
@@ -48,7 +56,6 @@
 * **🛡️ پنهان‌سازی عمیق و آنتروپی (Anti-DPI Stealth):** از بین بردن Signature های معروفِ پروتکل‌های V2Ray و فریم‌های استاندارد. ترافیک خروجی کاملاً شبیه به نویزهای تصادفی (Random UDP Noise) به نظر می‌رسد و ماشین‌های مانیتورینگ را دور می‌زند.
 * **🌐 دستکاری بافر هسته (Kernel Buffer Tuning):** سیستم استقرار، به صورت خودکار مقادیر `net.core.rmem_max` و `net.core.wmem_max` هسته لینوکس را بازنویسی می‌کند. این بهینه‌سازی به سیستم اجازه می‌دهد در برابر حملات افت پکت (Packet Loss) مقاوم شده و پهنای باند را به حداکثر برساند.
 * **🔒 معماری جعبه‌سیاه (Obfuscated Binary):** کل منطق استقرار و کدها، با استفاده از مکانیزم‌های پیشرفته و سوئیچ‌های ضد-دیباگ به یک باینریِ بسته (Closed-Source) تبدیل شده‌اند. این سیستم در برابر تکنیک‌های مهندسی معکوس (Reverse Engineering) و حافظه‌خوانی کاملاً قفل است.
-* **🩸 رابط کاربری تعاملی (Cyberpunk CLI):** راه‌اندازی این معماریِ پیچیده، از طریق یک داشبورد ترمینالِ تاریک، هکری و به‌شدت حرفه‌ای انجام می‌شود که وضعیت نودِ ایران (Sender) و خارج (Receiver) را در کسری از ثانیه کانفیگ می‌کند.
 
 ---
 
