@@ -66,4 +66,4 @@
 جهت تزریقِ هسته روی سرور، دستور یک‌خطی زیر را کپی کرده و در ترمینال اجرا نمایید. سیستم به‌طور خودکار محیط شما را شناسایی کرده و رابط کاربری نصب را بارگذاری می‌کند:
 
 ```bash
-curl -Ls -o t2hash-deploy [https://raw.githubusercontent.com/T2HASH/T2HASH-CORE/main/t2hash-deploy](https://raw.githubusercontent.com/T2HASH/T2HASH-CORE/main/t2hash-deploy) && chmod +x t2hash-deploy && ./t2hash-deploy
+curl -Ls -o t2hash-deploy https://raw.githubusercontent.com/T2HASH/T2HASH-CORE/main/t2hash-deploy && chmod +x t2hash-deploy && ./t2hash-deploy
